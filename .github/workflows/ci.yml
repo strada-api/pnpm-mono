@@ -20,9 +20,32 @@ jobs:
         with:
           node-version: 20
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+      # Setup AWS -- begin
+      - name: Configure AWS Credentials
+        id: creds
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::257838883645:role/GitHub
+          aws-region: us-east-1
+          output-credentials: true
+
+      - name: Install Amazon ECR Docker Credential Helper # Requried to securly log in to AWS ECR. `docker login` with `aws ecr get-login-password` is insecure.
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y amazon-ecr-credential-helper
+
+      - name: Configure Docker to use ECR Credential Helper
+        run: |
+          mkdir -p ~/.docker
+          echo '{"credsStore": "ecr-login"}' > ~/.docker/config.json
+      # Setup AWS -- end
 
       - name: Build server
         run: |
           docker build . --target server --tag server:${{ github.sha }}
+
+      - name: Push Docker image - server
+        env:
+          IMAGE_NAME: 257838883645.dkr.ecr.us-east-1.amazonaws.com/pnpm-mono/server:${{ github.sha }}
+        run: |
+          docker push $IMAGE_NAME
