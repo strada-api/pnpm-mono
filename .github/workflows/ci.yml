@@ -40,12 +40,9 @@ jobs:
           echo '{"credsStore": "ecr-login"}' > ~/.docker/config.json
       # Setup AWS -- end
 
-      - name: Build server
-        run: |
-          docker build . --target server --tag server:${{ github.sha }}
-
-      - name: Push Docker image - server
+      - name: Build and Push Docker image - server
         env:
           IMAGE_NAME: 257838883645.dkr.ecr.us-east-1.amazonaws.com/pnpm-mono/server:${{ github.sha }}
         run: |
+          docker build . --target server --tag $IMAGE_NAME
           docker push $IMAGE_NAME
