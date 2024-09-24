@@ -22,4 +22,4 @@ jobs:
 
       - name: Build server
         run: |
-          docker build . --target server --tag server:${{ github.sha }}
+          docker build . --target base --tag base:${{ github.sha }}
