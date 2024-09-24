@@ -40,9 +40,21 @@ jobs:
           echo '{"credsStore": "ecr-login"}' > ~/.docker/config.json
       # Setup AWS -- end
 
+      - name: Setup porter
+        uses: porter-dev/setup-porter@v0.1.0
+
       - name: Build and Push Docker image - server
         env:
           IMAGE_NAME: 257838883645.dkr.ecr.us-east-1.amazonaws.com/pnpm-mono/server:${{ github.sha }}
         run: |
           docker build . --target server --tag $IMAGE_NAME
           docker push $IMAGE_NAME
+
+      - name: Deploy Porter stack - server
+        timeout-minutes: 30
+        run: exec porter app update-tag pnpm-mono-server --tag ${{ github.sha }} --wait
+        env:
+          PORTER_CLUSTER: 3917
+          PORTER_HOST: https://dashboard.porter.run
+          PORTER_PROJECT: 10773
+          PORTER_TOKEN: ${{ secrets.PORTER_TOKEN }}
