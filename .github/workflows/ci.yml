@@ -43,6 +43,7 @@ jobs:
       - name: Setup porter
         uses: porter-dev/setup-porter@v0.1.0
 
+      # Deploy server
       - name: Build and Push Docker image - server
         env:
           IMAGE_NAME: 257838883645.dkr.ecr.us-east-1.amazonaws.com/pnpm-mono/server:${{ github.sha }}
@@ -53,6 +54,23 @@ jobs:
       - name: Deploy Porter stack - server
         timeout-minutes: 30
         run: exec porter app update-tag pnpm-mono-server --tag ${{ github.sha }} --wait
+        env:
+          PORTER_CLUSTER: 3917
+          PORTER_HOST: https://dashboard.porter.run
+          PORTER_PROJECT: 10773
+          PORTER_TOKEN: ${{ secrets.PORTER_TOKEN }}
+
+      # Deploy websocket
+      - name: Build and Push Docker image - websocket
+        env:
+          IMAGE_NAME: 257838883645.dkr.ecr.us-east-1.amazonaws.com/pnpm-mono/websocket:${{ github.sha }}
+        run: |
+          docker build . --target websocket --tag $IMAGE_NAME
+          docker push $IMAGE_NAME
+
+      - name: Deploy Porter stack - websocket
+        timeout-minutes: 30
+        run: exec porter app update-tag pnpm-mono-websocket --tag ${{ github.sha }} --wait
         env:
           PORTER_CLUSTER: 3917
           PORTER_HOST: https://dashboard.porter.run
