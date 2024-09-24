@@ -5,7 +5,7 @@
   "module": "./dist/esm/index.js",
   "types": "./dist/cjs/index.d.ts",
   "scripts": {
-    "build": "rm -r dist && tsc -p tsconfig.esm.json && tsc -p tsconfig.cjs.json"
+    "build": "rm -rf dist && tsc -p tsconfig.esm.json && tsc -p tsconfig.cjs.json"
   },
   "devDependencies": {
     "typescript": "^5.5.3"
