@@ -1,4 +1,4 @@
-name: Staging deploy
+name: Build
 on:
   push:
     branches:
@@ -9,7 +9,7 @@ permissions:
   contents: read # This is required for actions/checkout
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -23,5 +23,6 @@ jobs:
       - name: Build
         run: |
           npm install -g pnpm
+          pnpm install --no-frozen-lockfile
           pnpm run -r build
         
