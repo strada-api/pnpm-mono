@@ -16,6 +16,11 @@
 
     // Transpiling with TS
     "module": "ESNext",
-    "outDir": "dist"
+    "outDir": "dist",
+
+    // Emit TS declaration
+    "declaration": true,
+    "sourceMap": true,
+    "declarationMap": true
   }
 }
