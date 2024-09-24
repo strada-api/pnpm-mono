@@ -20,6 +20,6 @@ jobs:
         with:
           node-version: 20
 
-      - name: Build server
+      - name: Build full project
         run: |
-          docker build . --target base --tag base:${{ github.sha }}
+          docker build . --target build --tag build:${{ github.sha }}
