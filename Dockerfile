@@ -6,7 +6,7 @@ RUN npm install -g pnpm
 FROM base AS build
 COPY . /usr/src/app
 WORKDIR /usr/src/app
-RUN pnpm install --frozen-lockfile
+RUN pnpm install --no-frozen-lockfile
 RUN pnpm run -r build
 RUN pnpm deploy --filter=server --prod /prod/server
 RUN pnpm deploy --filter=websocket --prod /prod/websocket
