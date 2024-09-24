@@ -1,0 +1,8 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    // Transpiling with TS
+    "module": "ESNext",
+    "outDir": "dist/esm"
+  }
+}
