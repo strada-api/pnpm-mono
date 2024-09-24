@@ -20,6 +20,9 @@ jobs:
         with:
           node-version: 20
 
-      - name: Build full project
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build server
         run: |
-          docker build . --target build --tag build:${{ github.sha }}
+          docker build . --target server --tag server:${{ github.sha }}
