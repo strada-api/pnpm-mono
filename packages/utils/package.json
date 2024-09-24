@@ -1,8 +1,10 @@
 {
   "name": "utils",
   "version": "0.0.1",
-  "main": "src/index.ts",
-  "scripts": {},
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "rm -r dist && tsc"
+  },
   "devDependencies": {
     "typescript": "^5.5.3"
   }
